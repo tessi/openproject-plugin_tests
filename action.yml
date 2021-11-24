@@ -1,11 +1,34 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'openproject-plugin_test'
+description: 'Test your OpenProject plugin'
+author: 'bitcrowd'
 inputs:
-  milliseconds: # change this
+  pluginName:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: "Name of the plugin to test as listed in the Gemfile.plugins"
+  openprojectVersion:
+    required: false
+    description: "Version of OpenProject to test against. Must be a branch or tag name from https://github.com/opf/openproject"
+    default: "v12.0.2"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: build
+      env:
+        PLUGIN_NAME: ${{ inputs.pluginName }}
+        OPENPROJECT_BRANCH: ${{ inputs.openprojectVersion }}
+        LOCAL_DEV_CHECK: "1"
+        CI_RETRY_COUNT: "3"
+        CI_CACHE_PATH: "/tmp/cache"
+        CI_JOBS: "8"
+      shell: 'bash'
+      run: |
+        docker-compose -f ${{ github.action_path }}/docker/docker-compose.yml build --pull ci
+    - name: test
+      shell: 'bash'
+      run: |
+        docker-compose -f ${{ github.action_path }}/docker/docker-compose.yml run ci setup-tests run-rspec-unit
+    - name: cleanup
+      shell: 'bash'
+      run: |
+        docker-compose -f ${{ github.action_path }}/docker/docker-compose.yml down --remove-orphans -t 10
+

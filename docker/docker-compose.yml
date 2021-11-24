@@ -10,7 +10,6 @@ services:
       dockerfile: Dockerfile
       args:
         PLUGIN_NAME: ${PLUGIN_NAME}
-        PLUGIN_PATH: ${PLUGIN_PATH}
         OPENPROJECT_BRANCH: ${OPENPROJECT_BRANCH:-v12.0.2}
     environment:
       RSPEC_RETRY_RETRY_COUNT: "${CI_RETRY_COUNT:-3}"

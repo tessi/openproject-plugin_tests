@@ -27,6 +27,7 @@ runs:
     - name: build
       env:
         PLUGIN_NAME: ${{ inputs.pluginName }}
+        PLUGIN_PATH: ${{ github.workspace }}
         OPENPROJECT_BRANCH: ${{ inputs.openprojectVersion }}
         LOCAL_DEV_CHECK: "1"
         CI_RETRY_COUNT: "3"

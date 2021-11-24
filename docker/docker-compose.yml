@@ -10,6 +10,7 @@ services:
       dockerfile: Dockerfile
       args:
         PLUGIN_NAME: ${PLUGIN_NAME}
+        PLUGIN_PATH: ${PLUGIN_PATH}
         OPENPROJECT_BRANCH: ${OPENPROJECT_BRANCH:-v12.0.2}
     environment:
       RSPEC_RETRY_RETRY_COUNT: "${CI_RETRY_COUNT:-3}"
@@ -17,7 +18,7 @@ services:
     tmpfs:
       - "/tmp"
     volumes:
-      - "../..:/home/dev/plugin"
+      - "${PLUGIN_PATH}:/home/dev/plugin"
       - "${CI_CACHE_PATH:-/tmp}/op-bundle:/usr/local/bundle"
       - "${CI_CACHE_PATH:-/tmp}/op-node:/home/dev/openproject/frontend/node_modules"
     networks:

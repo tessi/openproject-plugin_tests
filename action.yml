@@ -16,6 +16,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: debug
+      shell: 'bash'
+      run: |
+        echo "github action path"
+        ls -la ${{ github.action_path}}
+        echo "pwd"
+        pwd
+        ls -la
     - name: build
       env:
         PLUGIN_NAME: ${{ inputs.pluginName }}

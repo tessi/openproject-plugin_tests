@@ -24,10 +24,12 @@ runs:
         echo "pwd"
         pwd
         ls -la
+        echo $GITHUB_WORKSPACE
+        echo ${{github.workspace}}
     - name: build
       env:
         PLUGIN_NAME: ${{ inputs.pluginName }}
-        PLUGIN_PATH: ${{ env.GITHUB_WORKSPACE }}
+        PLUGIN_PATH: ${{ github.workspace }}
         OPENPROJECT_BRANCH: ${{ inputs.openprojectVersion }}
         LOCAL_DEV_CHECK: "1"
         CI_RETRY_COUNT: "3"
